@@ -4,19 +4,15 @@ import java.util.Map;
 
 public class Cart {
 	
-	private Long id;
+	@Override
+	public String toString() {
+		return "Cart [productQuantities=" + productQuantities + "]";
+	}
+
 	
 	private Map<Long, Long> productQuantities;
 	
 	public Cart() {
-	}
-	
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id) {
-		this.id = id;
 	}
 	
 	public Map<Long, Long> getProductQuantities() {
@@ -26,6 +22,4 @@ public class Cart {
 	public void setProductQuantities(Map<Long, Long> productQuantities) {
 		this.productQuantities = productQuantities;
 	}
-
-	
 }

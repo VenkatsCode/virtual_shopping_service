@@ -12,7 +12,6 @@ import com.sap.cdom.vrshopping.models.Cart;
 import com.sap.cdom.vrshopping.models.Order;
 import com.sap.cdom.vrshopping.models.Product;
 
-@Service
 public class VRShoppingService {
 
 	@Autowired

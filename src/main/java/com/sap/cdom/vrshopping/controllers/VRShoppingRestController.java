@@ -4,17 +4,28 @@
 
 package com.sap.cdom.vrshopping.controllers;
 
+import java.io.IOException;
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.cdom.vrshopping.models.Cart;
 import com.sap.cdom.vrshopping.models.Order;
 import com.sap.cdom.vrshopping.models.Product;
@@ -61,9 +72,24 @@ public class VRShoppingRestController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@RequestMapping(value = "/order", method = RequestMethod.POST, consumes = {"application/json"},
+	@RequestMapping(value = "/order", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
 		produces = {"application/json"})
-	public ResponseEntity priceAndOrder(@RequestBody final Cart cart) {
+	public ResponseEntity priceAndOrder(@RequestParam final String productQuantities) throws JsonParseException, JsonMappingException, IOException {
+		System.out.println("productQuantities: "+productQuantities);
+		Cart cart = new Cart();
+		HashMap<Long, Long> products = new HashMap<>();
+		JSONArray jsonArray = new JSONArray(productQuantities);
+		System.out.println("jsonArray: "+jsonArray.toString());
+	    for (int i = 0; i < jsonArray.length(); i++) {            
+	    	JSONObject jsonObject = jsonArray.optJSONObject(i);
+	    	HashMap<String, Object> productsNew = new ObjectMapper().readValue(jsonObject.toString(), HashMap.class);
+	    	System.out.println("productsNew: "+productsNew);
+	    	System.out.println("productsNew.getid: "+productsNew.get("id"));
+	    	System.out.println("productsNew.getvalue: "+productsNew.get("value"));
+	    	products.put(Long.parseLong((productsNew.get("id")).toString()), Long.parseLong((productsNew.get("value")).toString()));
+	    	
+	    }
+	    cart.setProductQuantities(products);
 		Order order = vrShoppingService.order(cart);
 		final URI uriOfCreatedOrder = ServletUriComponentsBuilder.fromCurrentContextPath().path("order/{id}")
 			.buildAndExpand(order.getId()).toUri();

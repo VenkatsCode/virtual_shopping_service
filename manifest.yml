@@ -9,10 +9,10 @@
 # http://docs.cloudfoundry.org/devguide/deploy-apps/manifest.html
 ---
 applications:
-- name: Plant
+- name: VRService
   random-route: true
   memory: 1G
   host: DummyOne
-  path: target/plant-0.0.1-SNAPSHOT.jar
+  path: target/vrservice-0.0.1-SNAPSHOT.jar
   services:
-    - postgres-plant
+    - postgres-vrservice

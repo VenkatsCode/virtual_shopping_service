@@ -16,7 +16,7 @@ import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
 import com.sap.cdom.vrshopping.jpa.MultiTenantJpaTransactionManager;
 
 @Entity
-@Table(name = "Order")
+@Table(name = "Order_product")
 @Multitenant(MultitenantType.SINGLE_TABLE)
 @TenantDiscriminatorColumn(name = "TENANT_ID",
 	contextProperty = MultiTenantJpaTransactionManager.TENANT_DESCRIMINATOR_NAME)
@@ -71,4 +71,10 @@ public class Order {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+
+	@Override
+	public String toString() {
+		return "Order [id=" + id + ", total=" + total + ", quantity=" + quantity + ", date=" + date + "]";
+	}
+	
 }

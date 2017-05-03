@@ -46,7 +46,7 @@ public class JPAConfiguration extends JpaBaseConfiguration{
     }
 	
 	@Bean
-	VRShoppingService productService() {
+	VRShoppingService vrShoppingService() {
         return new VRShoppingService();
     }
 	
